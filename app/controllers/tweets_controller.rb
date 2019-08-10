@@ -5,22 +5,21 @@ class TweetsController < ApplicationController
 
     def create
         tweet = {content: tweet_params[:content], user: current_user}
-        render json: Tweet.create(tweet), include: [:user, :likes, :retweets]
+        render json: Tweet.create(tweet), include: [:user, :likes]
     end
 
     def user_tweets
-        retweets = current_user.retweets.map(&:tweet)
-        full_tweets = current_user.tweets + retweets
-        render json: full_tweets, include: [:user, :likes, :retweets]
+        full_tweets = current_user.tweets
+        render json: full_tweets, include: [:user, :likes]
     end
 
     def show_user_tweets
         user = User.find(params[:id])
-        render json: user.tweets, include: [:user, :likes, :retweets]
+        render json: user.tweets, include: [:user, :likes]
     end
 
     def timeline
-        render json: current_user.timeline, include: [:user, :likes, :retweets]
+        render json: current_user.timeline, include: [:user, :likes]
     end
 
     def destroy

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_06_172841) do
+ActiveRecord::Schema.define(version: 2019_08_07_194941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,9 +53,9 @@ ActiveRecord::Schema.define(version: 2019_08_06_172841) do
   end
 
   create_table "retweets", force: :cascade do |t|
+    t.boolean "rt"
     t.bigint "user_id"
     t.bigint "tweet_id"
-    t.boolean "rt", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tweet_id"], name: "index_retweets_on_tweet_id"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2019_08_06_172841) do
   create_table "tweets", force: :cascade do |t|
     t.string "content"
     t.bigint "user_id"
+    t.text "retweets", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_tweets_on_user_id"

@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
     has_many :tweets
     has_many :likes
-    has_many :retweets
+
 
     def name
         self.first_name + " " + self.last_name
