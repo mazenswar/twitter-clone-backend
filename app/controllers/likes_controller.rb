@@ -1,11 +1,14 @@
 class LikesController < ApplicationController
     
     def create
-        like = Like.create(tweet_id: like_params[:tweet_id], user_id: current_user.id)
-        if like.valid?
-            render json: like.tweet, include: [:user, :likes, :retweets]
+        like = Like.find_by(tweet_id: like_params[:tweet_id], user_id: current_user.id)
+        if like
+            like.destroy
+            tweet = Tweet.find(like_params[:tweet_id])
+            render json:  TweetSerializer.new(tweet)
         else
-            render json: {error: "You cannot like a tweet more than once"}
+            like = Like.create(tweet_id: like_params[:tweet_id], user_id: current_user.id)
+            render json: TweetSerializer.new(like.tweet)
         end
     end
 
@@ -13,7 +16,7 @@ class LikesController < ApplicationController
         tweet = Tweet.find(like_params[:tweet_id])
         like = tweet.likes.find_by(user_id: current_user.id)
         like.destroy
-        render json: tweet, include: [:user, :likes, :retweets]
+        render json: TweetSerializer.new(tweet)
     end
 
     private

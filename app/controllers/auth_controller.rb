@@ -4,13 +4,14 @@ class AuthController < ApplicationController
     def create
         user = User.find_by(username: user_params[:username])
         if user && user.authenticate(user_params[:password])
-            render json: {user: user, token: encode_token(user)}
+            serialized_user = UserSerializer.new(user)
+            render json: {user: serialized_user, token: encode_token(user)}
         end
     end
 
     def persist
         if token
-            render json: current_user, include: [:followers, :followees], except: [:password_digest]
+            render json: UserSerializer.new(current_user)
         end
     end
 

@@ -10,8 +10,11 @@ class User < ApplicationRecord
     has_many :tweets
     has_many :likes
 
+    def serialized
+        UserSerializer.new(self)
+    end
 
-    def name
+    def fullname
         self.first_name + " " + self.last_name
     end
 
@@ -19,5 +22,6 @@ class User < ApplicationRecord
         tweets = self.followees.map(&:tweets).flatten + self.tweets
         tweets.sort_by(&:created_at).reverse!
     end
+
 
 end
