@@ -23,5 +23,9 @@ class User < ApplicationRecord
         tweets.sort_by(&:created_at).reverse!
     end
 
+    def all_tweets
+        self.tweets + self.retweets
+    end
+
 
 end
