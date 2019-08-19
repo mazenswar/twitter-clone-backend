@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
     end
 
     def token
-        request.headers['Authorization'].split(' ')[1]
+        request.headers['Authorization'].split(' ')[1] if request.headers['Authorization']
     end
 
     def encode_token(user)
@@ -14,12 +14,12 @@ class ApplicationController < ActionController::API
     end
 
     def decoded_token
-        JWT.decode(token, secret, true, {algorithm: 'HS256'})
+        JWT.decode(token, secret, true, {algorithm: 'HS256'}) if token
     end
 
     def current_user
-        user_id = decoded_token[0]['user_id']
-        User.find(user_id)
+        user_id = decoded_token[0]['user_id'] if decoded_token
+        User.find(user_id) if user_id
     end
 
 end

@@ -1,8 +1,12 @@
 class RetweetsController < ApplicationController
 
+    def index
+        render json: Retweet.all
+    end
+    
     def show
         #### just to see data
-        retweet = RetweetSerializer.new(Retweet.find(params[:id]))
+        retweet = Retweet.find(params[:id])
         render json: retweet
     end
     
@@ -11,11 +15,13 @@ class RetweetsController < ApplicationController
 
         if is_retweeted
             tweet = is_retweeted.tweet
+            retweet_id = is_retweeted.id
             is_retweeted.delete
-            render json: TweetSerializer.new(tweet)
+            tweet = TweetSerializer.new(tweet)
+            render json: {tweet: tweet, retweet_id: retweet_id}
         else
             retweet = Retweet.create(rt: true, user_id: current_user.id, tweet_id: retweet_params[:tweet_id])
-            render json: RetweetSerializer.new(retweet)
+            render json: retweet
         end
     end
 

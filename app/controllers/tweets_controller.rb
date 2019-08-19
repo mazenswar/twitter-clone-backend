@@ -1,29 +1,34 @@
 class TweetsController < ApplicationController
     def index
-        tweets = Tweet.all[0..10]
-        render json: TweetSerializer.new(tweets)
+        tweets = Tweet.all
+        render json: tweets
     end
 
     def show
-        render json: TweetSerializer.new(Tweet.find(params[:id]))
+        render json: Tweet.find(params[:id])
     end
 
     def create
         tweet = Tweet.create(content: tweet_params[:content], user: current_user)
-        render json: TweetSerializer.new(tweet)
+        hashtags = tweet_params[:content].split(' ').select {|t| t.include?('#')}
+        hashtags.map do |h| 
+            hs = Hashtag.create(title: h)
+            TweetTag.create(tweet: tweet, hashtag: hs)
+        end
+        render json: tweet
     end
 
-    def user_tweets
-        render json: TweetSerializer.new(current_user.tweets) 
+    def user_tweets 
+        render json: current_user.all_tweets
     end
 
     def show_user_tweets
         user = User.find(params[:id])
-        render json: TweetSerializer.new(user.tweets)
+        render json: user.all_tweets
     end
 
     def timeline
-        render json: TweetSerializer.new(current_user.timeline) 
+        render json: current_user.timeline
     end
 
     def destroy

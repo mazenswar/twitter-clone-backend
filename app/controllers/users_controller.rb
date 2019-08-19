@@ -2,20 +2,20 @@ class UsersController < ApplicationController
 
     def index 
         users = User.all
-        render json: UserSerializer.new(users).serialized_json
+        render json: users
     end
 
     def show
         # render json: User.find(params[:id]), include: [:followers, :followees, tweets: {include: [:user, :likes]}]
           user = User.find(params[:id])
-          render json: UserSerializer.new(user).serialized_json
+          render json: user
 
     end
 
     def create
         user = User.create(user_params)
         if user.valid?
-            user = UserSerializer.new(user).serialized_json
+            user = user
             render json: {user: user, token: encode_token(user)}
         else
             render json: {errors: user.errors.full_messages}
@@ -25,7 +25,6 @@ class UsersController < ApplicationController
     def update
         user = User.find(params[:id])
         user.update(user_params)
-        user = UserSerializer.new(user).serialized_json
         render json: user
     end
 

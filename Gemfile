@@ -17,7 +17,8 @@ gem 'puma', '~> 3.11'
 gem 'bcrypt', '~> 3.1.7'
 gem 'jwt'
 gem 'faker'
-gem 'fast_jsonapi'
+gem 'active_model_serializers', '~> 0.10.0'
+# gem 'fast_jsonapi'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

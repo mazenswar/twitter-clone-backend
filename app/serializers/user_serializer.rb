@@ -1,13 +1,3 @@
-class UserSerializer
-  include FastJsonapi::ObjectSerializer
-  attributes :username, :email, :fullname, :first_name, :last_name, :followers, :followees
-  
-
- 
-  attribute :fullname do |obj|
-    obj.first_name + " " + obj.last_name
-  end
-
-
-
+class UserSerializer < ActiveModel::Serializer
+  attributes :id, :username, :fullname, :email, :tweets, :followers, :followees
 end

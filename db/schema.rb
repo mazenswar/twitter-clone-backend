@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_07_194941) do
+ActiveRecord::Schema.define(version: 2019_08_17_212532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,12 @@ ActiveRecord::Schema.define(version: 2019_08_07_194941) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "hashtags", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "tweet_id"
@@ -60,6 +66,15 @@ ActiveRecord::Schema.define(version: 2019_08_07_194941) do
     t.datetime "updated_at", null: false
     t.index ["tweet_id"], name: "index_retweets_on_tweet_id"
     t.index ["user_id"], name: "index_retweets_on_user_id"
+  end
+
+  create_table "tweet_tags", force: :cascade do |t|
+    t.bigint "hashtag_id"
+    t.bigint "tweet_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hashtag_id"], name: "index_tweet_tags_on_hashtag_id"
+    t.index ["tweet_id"], name: "index_tweet_tags_on_tweet_id"
   end
 
   create_table "tweets", force: :cascade do |t|
@@ -85,5 +100,7 @@ ActiveRecord::Schema.define(version: 2019_08_07_194941) do
   add_foreign_key "likes", "users"
   add_foreign_key "retweets", "tweets"
   add_foreign_key "retweets", "users"
+  add_foreign_key "tweet_tags", "hashtags"
+  add_foreign_key "tweet_tags", "tweets"
   add_foreign_key "tweets", "users"
 end

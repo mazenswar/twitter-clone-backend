@@ -1,20 +1,12 @@
-class TweetSerializer
-  include FastJsonapi::ObjectSerializer
-  attributes :content, :username, :likes, :retweets, :user_id, :created_at
- 
+class TweetSerializer < ActiveModel::Serializer
+  attributes :id, :content, :retweets, :likes, :username, :created_at, :user_id, :hashtags
 
-  # attribute :user do |obj|
-  #   obj.user.serialized
-  # end
-
-  attribute :username do |obj|
-    obj.user.username
+  def username
+    object.user.username
   end
 
-  attribute :fullname do |obj|
-    obj.user.fullname
+  def user_id
+    object.user.id
   end
-
-
 
 end

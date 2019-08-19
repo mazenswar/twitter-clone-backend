@@ -5,10 +5,10 @@ class LikesController < ApplicationController
         if like
             like.destroy
             tweet = Tweet.find(like_params[:tweet_id])
-            render json:  TweetSerializer.new(tweet)
+            render json:  tweet
         else
             like = Like.create(tweet_id: like_params[:tweet_id], user_id: current_user.id)
-            render json: TweetSerializer.new(like.tweet)
+            render json: like.tweet
         end
     end
 
@@ -16,7 +16,7 @@ class LikesController < ApplicationController
         tweet = Tweet.find(like_params[:tweet_id])
         like = tweet.likes.find_by(user_id: current_user.id)
         like.destroy
-        render json: TweetSerializer.new(tweet)
+        render json: tweet
     end
 
     private
