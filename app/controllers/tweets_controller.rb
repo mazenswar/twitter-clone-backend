@@ -9,6 +9,7 @@ class TweetsController < ApplicationController
     end
 
     def create
+        byebug
         tweet = Tweet.create(content: tweet_params[:content], user: current_user)
         hashtags = tweet_params[:content].split(' ').select {|t| t.include?('#')}
         hashtags.map do |h| 
