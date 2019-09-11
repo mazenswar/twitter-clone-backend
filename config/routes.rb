@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  
+  resources :mentions
   resources :tweet_tags
   resources :hashtags
   resources :retweets

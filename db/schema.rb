@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_17_212532) do
+ActiveRecord::Schema.define(version: 2019_08_27_143504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,16 @@ ActiveRecord::Schema.define(version: 2019_08_17_212532) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "mentions", force: :cascade do |t|
+    t.bigint "tweet_id"
+    t.bigint "user_id"
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tweet_id"], name: "index_mentions_on_tweet_id"
+    t.index ["user_id"], name: "index_mentions_on_user_id"
+  end
+
   create_table "retweets", force: :cascade do |t|
     t.boolean "rt"
     t.bigint "user_id"
@@ -98,6 +108,8 @@ ActiveRecord::Schema.define(version: 2019_08_17_212532) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "likes", "tweets"
   add_foreign_key "likes", "users"
+  add_foreign_key "mentions", "tweets"
+  add_foreign_key "mentions", "users"
   add_foreign_key "retweets", "tweets"
   add_foreign_key "retweets", "users"
   add_foreign_key "tweet_tags", "hashtags"

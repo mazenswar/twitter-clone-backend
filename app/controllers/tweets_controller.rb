@@ -9,14 +9,21 @@ class TweetsController < ApplicationController
     end
 
     def create
-        byebug
         tweet = Tweet.create(content: tweet_params[:content], user: current_user)
-        hashtags = tweet_params[:content].split(' ').select {|t| t.include?('#')}
+        hashtags = tweet_params[:content].split(' ').select {|t| t.start_with?('#')}
+        mentions = tweet_params[:content].split(' ').select {|t| t.start_with?('@')}
         hashtags.map do |h| 
             hs = Hashtag.create(title: h)
             TweetTag.create(tweet: tweet, hashtag: hs)
         end
-        render json: tweet
+        mentions.map do |m| 
+            username = m.slice(1, m.length)
+            user = User.find_by(username: username)
+            Mention.create(tweet: tweet, user: user) if user
+            byebug
+        end
+
+        render json: tweet, include: "**"
     end
 
     def user_tweets 
