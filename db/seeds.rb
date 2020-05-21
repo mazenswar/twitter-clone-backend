@@ -14,7 +14,7 @@ def user(name)
         first_name: first_name,
         last_name:last_name,
         email: "#{first_name}@email.com",
-        username: username.downcase!,
+        username: username.downcase,
         password: "123"
     }
 end

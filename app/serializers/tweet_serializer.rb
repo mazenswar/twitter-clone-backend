@@ -11,16 +11,16 @@ class TweetSerializer < ActiveModel::Serializer
     object.user.id
   end
 
-  def mentions
-      object.mentions.map do |mention|
-      {
-        id: mention.id,
-        username: mention.user.username,
-        user_id: mention.user.id,
-        read: mention.read,
-        tweet: mention.tweet
-      }
-    end
-  end
+  # def mentions
+  #     object.mentions.map do |mention|
+  #     {
+  #       id: mention.id,
+  #       username: mention.user.username,
+  #       user_id: mention.user.id,
+  #       read: mention.read,
+  #       tweet: mention.tweet
+  #     }
+  #   end
+  # end
 
 end
