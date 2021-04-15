@@ -11,15 +11,19 @@ class RetweetsController < ApplicationController
     end
     
     def create
+        rt = Retweet.find_by(tweet_id: 
+        retweet_params[:tweet_id], user_id: current_user.id)
+        if !rt
             retweet = Retweet.create(rt: true, user_id: current_user.id, tweet_id: retweet_params[:tweet_id])
             render json: retweet
+        else
+            rt_id = rt.id
+            rt.destroy
+            render json: {success: 'retweet deleted successfully', tweet: Tweet.find(retweet_params[:tweet_id]), rt_id: rt_id}
+        end
+            
     end
 
-    def destroy
-        rt = Retweet.find_by(tweet_id: retweet_params[:tweet_id])
-        rt.destroy_all
-        render json: {success: 'retweet deleted successfully'}
-    end
 
     private
 
