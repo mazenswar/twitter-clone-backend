@@ -19,7 +19,8 @@ class RetweetsController < ApplicationController
         else
             rt_id = rt.id
             rt.destroy
-            render json: {success: 'retweet deleted successfully', tweet: Tweet.find(retweet_params[:tweet_id]), rt_id: rt_id}
+            tweet = Tweet.find(retweet_params[:tweet_id])
+            render json: {success: 'retweet deleted successfully', tweet: TweetSerializer.new(tweet), rt_id: rt_id}
         end
             
     end
